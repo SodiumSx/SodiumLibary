@@ -1,4 +1,4 @@
-﻿--[[
+--[[
     Senior Hub • Sources | Senior Aster 1.0.1
     Client-side Roblox UI library. No gameplay/exploit features.
     Standalone: Lucide image IDs are embedded; no remote code dependencies.
@@ -72,7 +72,7 @@ local themes = {
 }
 themes.Orqan={Background=C(16,15,20),Sidebar=C(14,13,18),Panel=C(20,19,26),Hover=C(28,26,35),Stroke=C(31,29,38),Text=C(236,235,240),Muted=C(116,113,129),Accent=C(229,65,98)}
 themes.Serenity={Background=C(12,12,12),Sidebar=C(16,16,16),Panel=C(17,17,17),Hover=C(24,24,24),Stroke=C(31,31,31),Text=C(238,238,238),Muted=C(119,119,119),Accent=C(242,242,242)}
-themes.Default={Background=C(16,16,18),Sidebar=C(19,19,21),Panel=C(20,20,22),Hover=C(25,25,27),Stroke=C(30,30,33),Text=C(237,237,243),Muted=C(91,91,97),Accent=C(255,0,0)}
+themes.Default={Background=C(16,16,18),Sidebar=C(19,19,21),Panel=C(20,20,22),Hover=C(25,25,27),Stroke=C(30,30,33),Text=C(237,237,243),Muted=C(91,91,97),Accent=C(177,228,250)}
 local function accentInk(color)
     local function linear(v) return v<=.04045 and v/12.92 or ((v+.055)/1.055)^2.4 end
     local light=.2126*linear(color.R)+.7152*linear(color.G)+.0722*linear(color.B)
