@@ -380,24 +380,7 @@ function Library:_CreateWindow(config)
         if processed or UIS:GetFocusedTextBox() or w._capturing then return end
         if i.KeyCode==w.Keybind then w:Toggle() end
     end)
-    local watermark=w:Frame(gui,{Name="Watermark",AnchorPoint=Vector2.new(.5,0),Position=UDim2.new(.5,0,0,12),Size=UDim2.fromOffset(80,30),Visible=config.Watermark==true},"Sidebar"); corner(watermark,5); w:Stroke(watermark)
-    w:Icon(watermark,config.Logo or 92834373646022,{Position=UDim2.fromOffset(7,5),Size=UDim2.fromOffset(15,15)},"White")
-    w.WatermarkText=w:Text(watermark,config.WatermarkText or "Senior Hub � Sources   |   Aster   |   Client UI",{Position=UDim2.fromOffset(28,0),Size=UDim2.new(1,-34,1,0),TextSize=10,TextTruncate=Enum.TextTruncate.AtEnd}); w.Watermark=watermark
-    local markScale=make("UIScale",{Scale=1},watermark);w.WatermarkScale=markScale
-    function w:FitWatermark()
-        if self.Destroyed then return end
-        local text=self.WatermarkText;local measured
-        local ok,bounds=pcall(function() return TextService:GetTextSize(text.Text,text.TextSize,text.Font,Vector2.new(16384,64)) end)
-        if ok and bounds then measured=bounds.X else measured=(utf8.len(text.Text) or #text.Text)*(text.TextSize or 10)*.54 end
-        local contentWidth=math.max(80,math.ceil(measured)+36)
-        watermark.Size=UDim2.fromOffset(contentWidth,30);self.WatermarkContentWidth=contentWidth
-        markScale.Scale=math.max(.05,math.min(1,(gui.AbsoluteSize.X-28)/contentWidth))
-    end
-    w:Connect(w.WatermarkText:GetPropertyChangedSignal("Text"),function() w:FitWatermark() end)
-    w:Connect(w.WatermarkText:GetPropertyChangedSignal("TextSize"),function() w:FitWatermark() end)
-    w:Connect(w.WatermarkText:GetPropertyChangedSignal("Font"),function() w:FitWatermark() end)
-    w:Connect(gui:GetPropertyChangedSignal("AbsoluteSize"),function() w:FitWatermark() end)
-    w:FitWatermark()
+    -- Watermark removed
     local hotkeys=w:Frame(gui,{Name="Hotkeys",AnchorPoint=Vector2.new(0,.5),Position=UDim2.new(0,14,.5,0),Size=UDim2.fromOffset(164,0),AutomaticSize=Enum.AutomaticSize.Y,Visible=config.Hotkeys==true},"Sidebar"); corner(hotkeys,5); w:Stroke(hotkeys); pad(hotkeys,8); list(hotkeys,3); w.Hotkeys=hotkeys
     local hotkeyDrag=w:Button(hotkeys,{Name="KeybindListDrag",Size=UDim2.new(1,0,0,22),LayoutOrder=0});w:Text(hotkeyDrag,"Keybinds",{Size=UDim2.fromScale(1,1),TextSize=12,Font=Enum.Font.BuilderSansMedium})
     local hudDragging,hudStart,hudOrigin,hudTouch
@@ -418,13 +401,13 @@ function Library:_CreateWindow(config)
         end
         hotkeys.Visible=self.HotkeyEnabled==true and #hotkeyRows>0
     end
-    function w:SetWatermarkVisible(value) watermark.Visible=value==true end
+    function w:SetWatermarkVisible(value) end
     function w:SetHotkeysVisible(value) self.HotkeyEnabled=value==true;self:RefreshHotkeys() end
-    function w:SetWatermark(text) self.CustomWatermark=true;self.WatermarkText.Text=tostring(text);self:FitWatermark() end
+    function w:SetWatermark(text) end
     function w:RefreshTheme()
         local alive={}; for _,b in ipairs(self._bindings) do if b[1].Parent then b[1][b[2]]=self.Theme[b[3]]; table.insert(alive,b) end end; self._bindings=alive
         local gradients={}; for _,gradient in ipairs(self._gradients) do if gradient.Parent then gradient.Color=ColorSequence.new(C(255,255,255),self.Theme.Gradient); table.insert(gradients,gradient) end end; self._gradients=gradients
-        for _,c in ipairs(self.Controls) do if c.Options and c.Options.ThemeToken then c.Value=self.Theme[c.Options.ThemeToken];if not c._animating and (not c.Animation or c.Animation=="None") then c._baseColor=c.Value end elseif c.Options and c.Options.MenuBind then c.Value=self.Keybind elseif c.Options and c.Options.Setting=="EasingStyle" then c.Value=self.EasingStyle elseif c.Options and c.Options.Setting=="ThemeName" then c.Value=self.ThemeName elseif c.Options and c.Options.Setting=="TweenSpeed" then c.Value=self.TweenSpeed elseif c.Options and c.Options.Setting=="NotificationPosition" then c.Value=self.NotificationPosition elseif c.Options and c.Options.Setting=="Watermark" then c.Value=self.Watermark.Visible elseif c.Options and c.Options.Setting=="Hotkeys" then c.Value=self.HotkeyEnabled end;c:Refresh();if c.RefreshKeyMenu then c:RefreshKeyMenu() end end; for _,t in ipairs(self.Tabs) do t:Refresh() end; self:RefreshHotkeys()
+        for _,c in ipairs(self.Controls) do if c.Options and c.Options.ThemeToken then c.Value=self.Theme[c.Options.ThemeToken];if not c._animating and (not c.Animation or c.Animation=="None") then c._baseColor=c.Value end elseif c.Options and c.Options.MenuBind then c.Value=self.Keybind elseif c.Options and c.Options.Setting=="EasingStyle" then c.Value=self.EasingStyle elseif c.Options and c.Options.Setting=="ThemeName" then c.Value=self.ThemeName elseif c.Options and c.Options.Setting=="TweenSpeed" then c.Value=self.TweenSpeed elseif c.Options and c.Options.Setting=="NotificationPosition" then c.Value=self.NotificationPosition elseif c.Options and c.Options.Setting=="Watermark" then c.Value=false elseif c.Options and c.Options.Setting=="Hotkeys" then c.Value=self.HotkeyEnabled end;c:Refresh();if c.RefreshKeyMenu then c:RefreshKeyMenu() end end; for _,t in ipairs(self.Tabs) do t:Refresh() end; self:RefreshHotkeys()
     end
     function w:SetTheme(name) assert(themes[name],"Unknown theme"); for _,c in ipairs(self.Controls) do if c.SetAnimation then c:SetAnimation("None",true) end end;self.ThemeName=name; self.Theme=copy(themes[name]); self:RefreshTheme() end
     function w:SetThemeColor(token,color) assert(self.Theme[token] and typeof(color)=="Color3","Invalid theme color"); self.Theme[token]=color; if token=="Accent" then self.Theme.AccentText=accentInk(color) end; self:RefreshTheme() end
@@ -1177,7 +1160,7 @@ function Library:_CreateWindow(config)
         return tab
     end
     function w:ExportConfig()
-        local data={Format="SeniorAster",Version=1,Values={},Opacity={},Bindings={},KeyModes={},Animations={},PlayerPriorities={},TweenSpeed=self.TweenSpeed,NotificationPosition=self.NotificationPosition,EasingStyle=self.EasingStyle,Casing=self.Casing,Palette={},Theme=self.ThemeName,MenuKey=self.Keybind.Name,Watermark=self.Watermark.Visible,Hotkeys=self.HotkeyEnabled}
+        local data={Format="SeniorAster",Version=1,Values={},Opacity={},Bindings={},KeyModes={},Animations={},PlayerPriorities={},TweenSpeed=self.TweenSpeed,NotificationPosition=self.NotificationPosition,EasingStyle=self.EasingStyle,Casing=self.Casing,Palette={},Theme=self.ThemeName,MenuKey=self.Keybind.Name,Watermark=false,Hotkeys=self.HotkeyEnabled}
         for token,color in pairs(self.Theme) do data.Palette[token]=color:ToHex() end
         for flag,control in pairs(self.Flags) do
             local value=control._baseColor or control:Get()
