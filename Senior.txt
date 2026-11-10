@@ -254,6 +254,7 @@ function Library:_CreateWindow(config)
     local headerDrag=w:Button(header,{Name="WindowDrag",Size=UDim2.fromScale(1,1)})
     w.HeaderIcon=w:Icon(header,"swords",{Visible=false})
     w.Breadcrumb=w:Text(header,"",{Visible=false});w.Description=w:Text(header,"",{Visible=false})
+    local closeBtn=make("ImageButton",{Name="CloseButton",Position=UDim2.new(1,-36,0,8),Size=UDim2.fromOffset(24,24),BackgroundTransparency=1,Image=image("x"),ImageColor3=w.Theme.Accent,ZIndex=10},header);w:Bind(closeBtn,"ImageColor3","Accent");w:Connect(closeBtn.Activated,function() w:Toggle() end)
     local subtabs=make("ScrollingFrame",{Name="Subtabs",Position=UDim2.fromOffset(10,10),Size=UDim2.new(1,-20,0,28),CanvasSize=UDim2.new(),AutomaticCanvasSize=Enum.AutomaticSize.X,ScrollingDirection=Enum.ScrollingDirection.X,Active=true,BackgroundTransparency=1,BorderSizePixel=0,ScrollBarThickness=1},header);list(subtabs,3,true);w.Subtabs=subtabs;w:Bind(subtabs,"ScrollBarImageColor3","Muted")
     local pages=w:Frame(root,{Name="Pages",Position=UDim2.fromOffset(sidebarWidth+10,48),Size=UDim2.new(1,-sidebarWidth-22,1,-60)});w.Pages=pages
     local searchFrame=w:Frame(sidebar,{Visible=false});local search=make("TextBox",{Text="",Visible=false},searchFrame);w.SearchBox=search
