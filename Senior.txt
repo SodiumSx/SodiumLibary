@@ -545,8 +545,9 @@ function Library:_CreateWindow(config)
             if captionHeight>0 then w:Icon(head,"crosshair",{Position=UDim2.fromOffset(10,12),Size=UDim2.fromOffset(14,14)},"Text");w:Text(head,s.Title,{Position=UDim2.fromOffset(36,3),Size=UDim2.new(1,-44,1,-3),TextSize=14}) end
             local panel
             if nested then panel=w:Frame(holder,{Name="GroupContent",Size=UDim2.new(1,0,0,0),AutomaticSize=Enum.AutomaticSize.Y})
-            else panel=w:Bind(make("ScrollingFrame",{Name="SectionScroll",Active=true,Position=UDim2.fromOffset(0,captionHeight),Size=UDim2.new(1,0,1,-captionHeight),BackgroundTransparency=0,BorderSizePixel=0,CanvasSize=UDim2.new(),AutomaticCanvasSize=Enum.AutomaticSize.Y,ScrollBarThickness=2,ScrollingDirection=Enum.ScrollingDirection.Y,ClipsDescendants=true},holder),"BackgroundColor3","Panel");w:Bind(panel,"ScrollBarImageColor3","Text");pad(panel,8,5);w:Frame(holder,{Name="SectionAccent",Position=UDim2.new(0,8,0,captionHeight),Size=UDim2.new(1,-16,0,2),ZIndex=10},"Accent") end
+            else panel=w:Bind(make("ScrollingFrame",{Name="SectionScroll",Active=true,Position=UDim2.fromOffset(0,captionHeight),Size=UDim2.new(1,0,1,-captionHeight),BackgroundTransparency=0,BorderSizePixel=0,CanvasSize=UDim2.new(),AutomaticCanvasSize=Enum.AutomaticSize.Y,ScrollBarThickness=2,ScrollingDirection=Enum.ScrollingDirection.Y,ClipsDescendants=true},holder),"BackgroundColor3","Panel");w:Bind(panel,"ScrollBarImageColor3","Text");pad(panel,8,5) end
             local layout=list(panel,0);s.Frame=panel;s.Layout=layout;s.Nested=nested;s.CaptionHeight=captionHeight
+            w:Frame(panel,{Name="SectionAccent",Position=UDim2.new(0,8,0,0),Size=UDim2.new(1,-16,0,2),ZIndex=10},"Accent")
             s.AutoHeight=not nested and (sectionConfig.AutoHeight==true or (sectionConfig.AutoHeight~=false and sectionConfig.HeightScale==nil and sectionConfig.Height==nil))
             s.HeightScale=sectionConfig.HeightScale;s.HeightOffset=sectionConfig.HeightOffset;s.FixedHeight=sectionConfig.Height;s.MaxHeight=sectionConfig.MaxHeight
             function s:RefreshHeight() w:RefreshSectionSizes(self.Tab) end
